@@ -75,8 +75,6 @@ public class XMLPrinter extends DefaultHandler {
    public void startDocument ()
    {
       childcounter =HAS_CONTENT;
-      pw.print("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
-        (prettyPrint ? "\n": ""));
       state = STATE_TAG;
    }
 

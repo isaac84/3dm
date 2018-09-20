@@ -18,6 +18,7 @@
 // along with 3DM; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
+
 package tdm.lib;
 
 import org.xml.sax.XMLReader;
@@ -27,6 +28,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.helpers.XMLReaderFactory;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Stack;
 
 /** 3DM wrapper for a generic XML SAX parser. */
@@ -65,6 +69,35 @@ public class XMLParser extends DefaultHandler {
   private NodeFactory factory = null;
   private Stack treestack = new Stack();
 
+  // modified by jk4287 on 05/05/15
+  // new method to deal with Xml String
+  
+  /**
+   * 
+   * @param xmlString
+   * @param aFactory
+   * @return
+   * @throws ParseException
+   * @throws java.io.FileNotFoundException
+   * @throws java.io.IOException
+   */
+  public Node parseString(String xmlString, NodeFactory aFactory) throws ParseException,
+  java.io.FileNotFoundException, java.io.IOException {
+      factory = aFactory;
+      //FileReader r = new FileReader(file);
+      try {
+        InputSource is = new InputSource( new StringReader(xmlString));
+        is.setEncoding("utf-8");
+        xr.parse(is);
+      } catch ( org.xml.sax.SAXException x ) {
+        throw new ParseException(x.getMessage());
+      }
+      Node root = currentNode;
+      // Don't leave a ptr to the parsed tree; it can't be GC'd then!
+      currentNode = null;
+      factory = null; // forget factory and allow GC
+      return root;
+  }
 
   /** Parse an XML file. Returns a parse tree of the XML file.
    *  @param file Input XML file

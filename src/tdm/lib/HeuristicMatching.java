@@ -36,7 +36,7 @@ import java.util.Collections;
  *  Note: make sure there are no matched nodes in the trees before
  *  constructing a matching.
  */
-
+@SuppressWarnings(value={"rawtypes", "unchecked", "unused"})
 public class HeuristicMatching implements Matching {
 
   protected BaseNode baseRoot = null;
@@ -551,7 +551,13 @@ public class HeuristicMatching implements Matching {
           b.getContent() instanceof XMLTextNode) ||
         (a.getContent() instanceof XMLElementNode &&
           b.getContent() instanceof XMLElementNode)) {
-      addMatching(a,b);
+        
+        if(a.getContent() instanceof XMLElementNode && b.getContent() instanceof XMLElementNode) {
+            if(((XMLElementNode) a.getContent()).getQName().equalsIgnoreCase(((XMLElementNode)b.getContent()).getQName())) {
+                addMatching(a,b);
+            }
+        }
+
     }
   }
 

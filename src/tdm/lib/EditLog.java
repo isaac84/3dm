@@ -201,4 +201,13 @@ public class EditLog {
   public void commit() {
     checkPoints.pop();
   }
+  
+  /**
+   * @since 05/05/2015
+   * @author jk4287
+   * @return
+   */
+  public boolean hasEdit() {
+      return edits.size() != 0;
+  }
 }

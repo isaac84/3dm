@@ -35,12 +35,13 @@ ant contrib-ok
     <!-- Create the build directory structure used by compile -->
     <mkdir dir="${build}"/>
     <mkdir dir="${tmpdir}"/>
+    <mkdir dir="${build-jar}"/>
   </target>
 
   <target name="compile" depends="init"
         description="compile the source " >
     <javac srcdir="${src}" destdir="${build}"
-     includes="tdm/**" excludes="tdm/guitool/**" >
+     includes="tdm/**" excludes="tdm/guitool/**" debug="true" debuglevel="lines,vars,source">
     <classpath>
       <path refid="libpath" />
     </classpath>
@@ -256,6 +257,7 @@ message="The test is successful if there are no errors, and the diff below is &l
           fork="true">
       <!--jvmarg value="-verbose:class"/-->
       <jvmarg value="-enableassertions"/>
+      <jvmarg value="-Xmx1g"/>
       <arg value="${testclass}"/>
       <classpath>
         <path refid="libpath" />
